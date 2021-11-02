@@ -1,0 +1,96 @@
+<html>
+<body>
+
+New entry: <input type="text" id="new_ent" /><input type="button" id="new_ent_add" value="Add" /><br/>
+<div id="list"></div><br/>
+
+<input type="button" id="going" value="GO" /><br/>
+
+<script>
+
+// 追加/削除を繰り返していると画面に表示されている内容とitem_arrayの並び順が異なってくるので注意が必要
+
+var item_number = 0;
+var item_array = [];
+
+var going = document.getElementById("going");
+going.onclick = function(){
+
+    if(item_number == 0){
+        alert("not has entry");
+        return 0;
+    }
+
+    var rng = Math.random() * (item_number * 3);
+
+    if(rng > item_number)
+        rng = rng % (item_number - 1);
+
+    rng = rng >>> 0; // float to int
+
+    alert(item_array[rng]["val"]);
+
+    return 0;
+}
+
+var x = document.getElementById("new_ent_add");
+x.onclick = function(){
+
+    var z = document.getElementById("new_ent");
+
+    if(z.value == ""){
+        alert("Error!");
+        return 0;
+    }
+
+    var new_id = "___" + z.value;
+
+    if(item_array[new_id] != undefined){
+        alert("Has same entry!");
+        return 0;
+    }
+
+    var curr_item_number = item_number;
+
+    var new_div = document.createElement("div");
+    new_div.id        = new_id;
+
+    var new_span = document.createElement("span");
+    new_span.innerHTML = " " + z.value;
+
+    item_array[item_number] = [];
+    item_array[item_number]["val"] = z.value;
+    item_array[item_number]["number"] = item_number;
+
+    var new_input = document.createElement("input");
+    new_input.type  = "button";
+    new_input.value = "X";
+    new_input.onclick = function(){
+
+        var list = document.getElementById("list");
+        var div_ent = document.getElementById(new_div.id);
+        list.removeChild(div_ent);
+
+        if(item_number != 1){
+            item_array[curr_item_number] = item_array[item_number - 1];
+            item_array[curr_item_number]["number"] = curr_item_number;
+        }
+
+        item_array[item_number] = undefined;
+        item_number--;
+    }
+
+    new_div.appendChild(new_input);
+    new_div.appendChild(new_span);
+
+    var list = document.getElementById("list");
+    list.appendChild(new_div);
+    item_number++;
+
+    return 0;
+}
+
+</script>
+
+</body>
+</html>
