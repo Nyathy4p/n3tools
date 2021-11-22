@@ -6,6 +6,8 @@ New entry: <input type="text" id="new_ent" /><input type="button" id="new_ent_ad
 
 <input type="button" id="going" value="GO" /><br/>
 
+<audio id="id_drum_roll" controls src="./drum_roll.mp3" style="display: none"></audio>
+
 <script>
 
 // 追加/削除を繰り返していると画面に表示されている内容とitem_arrayの並び順が異なってくるので注意が必要
@@ -21,14 +23,24 @@ going.onclick = function(){
         return 0;
     }
 
-    var rng = Math.random() * (item_number * 3);
+    var id_drum_roll = document.getElementById("id_drum_roll");
+    if(id_drum_roll == null)
+        return -1;
 
-    if(rng > item_number)
-        rng = rng % (item_number - 1);
+    id_drum_roll.play();
 
-    rng = rng >>> 0; // float to int
+    var log = function(){
+        var rng = Math.random() * (item_number * 3);
 
-    alert(item_array[rng]["val"]);
+        if(rng > item_number)
+            rng = rng % (item_number - 1);
+
+        rng = rng >>> 0; // float to int
+
+        alert(item_array[rng]["val"]);
+    };
+
+    setTimeout(log, 4100);
 
     return 0;
 }
